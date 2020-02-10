@@ -48,19 +48,18 @@ var getRandomBool = function () {
 };
 
 var getRandomItemFromArray = function (arr) {
-  var index = getRandomInt(0, arr.length - 1);
-  return arr[index];
+  return arr[getRandomInt(0, arr.length - 1)];
 };
 
-var setup = document.querySelector('.setup');
-var setupSimilar = document.querySelector('.setup-similar');
-var similarWizardTemplate = document.querySelector('#similar-wizard-template');
-var similarWizardsList = document.querySelector('.setup-similar-list');
+var setupElement = document.querySelector('.setup');
+var setupSimilarElement = document.querySelector('.setup-similar');
+var similarWizardTemplateElement = document.querySelector('#similar-wizard-template');
+var similarWizardsListElement = document.querySelector('.setup-similar-list');
 
 var generateRandomWizards = function (count) {
   var selectedWizards = [];
   for (var i = 0; i < count; i++) {
-    var wizardName = getRandomBool
+    var wizardName = getRandomBool()
       ? getRandomItemFromArray(NAMES) + ' ' + getRandomItemFromArray(SURNAMES)
       : getRandomItemFromArray(SURNAMES) + ' ' + getRandomItemFromArray(NAMES);
     var randomWizard = {
@@ -74,7 +73,7 @@ var generateRandomWizards = function (count) {
 };
 
 var renderSingleSimilarWizard = function (wizard) {
-  var wizardElement = similarWizardTemplate.content.cloneNode(true);
+  var wizardElement = similarWizardTemplateElement.content.cloneNode(true);
   var wizardLabel = wizardElement.querySelector('.setup-similar-label');
   var wizardCoat = wizardElement.querySelector('.wizard-coat');
   var wizardEyes = wizardElement.querySelector('.wizard-eyes');
@@ -89,9 +88,9 @@ var renderMultipleSimilarWizards = function (arr) {
   for (var i = 0; i < arr.length; i++) {
     fragment.appendChild(renderSingleSimilarWizard(arr[i]));
   }
-  similarWizardsList.appendChild(fragment);
+  similarWizardsListElement.appendChild(fragment);
 };
 
-setup.classList.remove('hidden');
+setupElement.classList.remove('hidden');
 renderMultipleSimilarWizards(generateRandomWizards(WIZARDS_COUNT));
-setupSimilar.classList.remove('hidden');
+setupSimilarElement.classList.remove('hidden');
