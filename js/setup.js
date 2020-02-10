@@ -43,10 +43,6 @@ var getRandomInt = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-var getRandomBool = function () {
-  return Math.random() < 0.5;
-};
-
 var getRandomItemFromArray = function (arr) {
   return arr[getRandomInt(0, arr.length - 1)];
 };
@@ -59,11 +55,8 @@ var similarWizardsListElement = document.querySelector('.setup-similar-list');
 var generateRandomWizards = function (count) {
   var selectedWizards = [];
   for (var i = 0; i < count; i++) {
-    var wizardName = getRandomBool()
-      ? getRandomItemFromArray(NAMES) + ' ' + getRandomItemFromArray(SURNAMES)
-      : getRandomItemFromArray(SURNAMES) + ' ' + getRandomItemFromArray(NAMES);
     var randomWizard = {
-      name: wizardName,
+      name: getRandomItemFromArray(NAMES) + ' ' + getRandomItemFromArray(SURNAMES),
       coatColor: getRandomItemFromArray(COAT_COLORS),
       eyesColor: getRandomItemFromArray(EYES_COLORS)
     };
