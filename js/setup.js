@@ -1,5 +1,8 @@
 'use strict';
 
+var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
+
 var WIZARDS_COUNT = 4;
 var NAMES = [
   'Иван',
@@ -36,6 +39,26 @@ var EYES_COLORS = [
   'yellow',
   'green'
 ];
+var FIREBALL_COLORS = [
+  '#ee4830',
+  '#30a8ee',
+  '#5ce6c0',
+  '#e848d5',
+  '#e6e848'
+];
+
+var setupElement = document.querySelector('.setup');
+var setupSimilarElement = document.querySelector('.setup-similar');
+var similarWizardTemplateElement = document.querySelector('#similar-wizard-template');
+var similarWizardsListElement = document.querySelector('.setup-similar-list');
+var setupOpenElement = document.querySelector('.setup-open');
+var setupOpenIconElement = setupOpenElement.querySelector('.setup-open-icon');
+var setupCloseElement = setupElement.querySelector('.setup-close');
+var setupUserNameInputElement = setupElement.querySelector('.setup-user-name');
+var wizardCoatElement = setupElement.querySelector('.wizard-coat');
+var wizardEyesElement = setupElement.querySelector('.wizard-eyes');
+var wizardFireballElement = setupElement.querySelector('.setup-fireball-wrap');
+
 
 var getRandomInt = function (min, max) {
   min = Math.ceil(min);
@@ -47,10 +70,6 @@ var getRandomItemFromArray = function (arr) {
   return arr[getRandomInt(0, arr.length - 1)];
 };
 
-var setupElement = document.querySelector('.setup');
-var setupSimilarElement = document.querySelector('.setup-similar');
-var similarWizardTemplateElement = document.querySelector('#similar-wizard-template');
-var similarWizardsListElement = document.querySelector('.setup-similar-list');
 
 var generateRandomWizards = function (count) {
   var selectedWizards = [];
@@ -84,6 +103,51 @@ var renderMultipleSimilarWizards = function (arr) {
   similarWizardsListElement.appendChild(fragment);
 };
 
-setupElement.classList.remove('hidden');
+var openPopup = function () {
+  setupElement.classList.remove('hidden');
+  document.addEventListener('keydown', popupEscPressHandler);
+};
+
+var closePopup = function () {
+  setupElement.classList.add('hidden');
+  document.removeEventListener('keydown', popupEscPressHandler);
+};
+
+var popupEscPressHandler = function (evt) {
+  if (evt.keyCode === ESC_KEYCODE && document.activeElement !== setupUserNameInputElement) {
+    closePopup();
+  }
+};
+
+setupOpenElement.addEventListener('click', function () {
+  openPopup();
+});
+
+setupOpenIconElement.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    openPopup();
+  }
+});
+
+setupCloseElement.addEventListener('click', function () {
+  closePopup();
+});
+
+setupCloseElement.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    closePopup();
+  }
+});
+
+wizardCoatElement.addEventListener('click', function () {
+  wizardCoatElement.style.fill = getRandomItemFromArray(COAT_COLORS);
+});
+wizardEyesElement.addEventListener('click', function () {
+  wizardEyesElement.style.fill = getRandomItemFromArray(EYES_COLORS);
+});
+wizardFireballElement.addEventListener('click', function () {
+  wizardFireballElement.style.backgroundColor = getRandomItemFromArray(FIREBALL_COLORS);
+});
+
 renderMultipleSimilarWizards(generateRandomWizards(WIZARDS_COUNT));
 setupSimilarElement.classList.remove('hidden');
