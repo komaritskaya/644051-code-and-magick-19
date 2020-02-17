@@ -13,17 +13,28 @@
     var wizardCoat = wizardElement.querySelector('.wizard-coat');
     var wizardEyes = wizardElement.querySelector('.wizard-eyes');
     wizardLabel.textContent = wizard.name;
-    wizardCoat.style.fill = wizard.coatColor;
-    wizardEyes.style.fill = wizard.eyesColor;
+    wizardCoat.style.fill = wizard.colorCoat;
+    wizardEyes.style.fill = wizard.colorEyes;
     return wizardElement;
   };
 
-  var renderMultipleSimilarWizards = function (arr) {
+  var dataSuccessHandler = function (arr) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < arr.length; i++) {
+    for (var i = 0; i < window.data.WIZARDS_COUNT; i++) {
       fragment.appendChild(renderSingleSimilarWizard(arr[i]));
     }
     similarWizardsListElement.appendChild(fragment);
+  };
+
+  var dataErrorHandler = function (errorMessage) {
+    var errorElement = document.createElement('div');
+    errorElement.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+    errorElement.style.position = 'absolute';
+    errorElement.style.left = 0;
+    errorElement.style.right = 0;
+    errorElement.style.fontSize = '30px';
+    errorElement.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', errorElement);
   };
 
   wizardCoatElement.addEventListener('click', function () {
@@ -36,5 +47,19 @@
     wizardFireballElement.style.backgroundColor = window.utils.getRandomItemFromArray(window.data.FIREBALL_COLORS);
   });
 
-  renderMultipleSimilarWizards(window.data.generateRandomWizards(window.data.WIZARDS_COUNT));
+  var renderWizardsData = function () {
+    window.backend.load(dataSuccessHandler, dataErrorHandler);
+  };
+
+  var clearWizardsData = function () {
+    while (similarWizardsListElement.firstChild) {
+      similarWizardsListElement.removeChild(similarWizardsListElement.firstChild);
+    }
+  };
+
+  window.wizards = {
+    renderWizardsData: renderWizardsData,
+    clearWizardsData: clearWizardsData,
+    dataErrorHandler: dataErrorHandler
+  };
 })();

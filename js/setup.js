@@ -2,6 +2,7 @@
 
 (function () {
   var setupElement = document.querySelector('.setup');
+  var formElement = setupElement.querySelector('.setup-wizard-form');
   var setupSimilarElement = document.querySelector('.setup-similar');
   var setupOpenElement = document.querySelector('.setup-open');
   var setupOpenIconElement = setupOpenElement.querySelector('.setup-open-icon');
@@ -10,11 +11,15 @@
 
   var openPopup = function () {
     setupElement.classList.remove('hidden');
+    setupSimilarElement.classList.remove('hidden');
+    window.wizards.renderWizardsData();
     document.addEventListener('keydown', popupEscPressHandler);
   };
 
   var closePopup = function () {
     setupElement.classList.add('hidden');
+    setupSimilarElement.classList.add('hidden');
+    window.wizards.clearWizardsData();
     document.removeEventListener('keydown', popupEscPressHandler);
   };
 
@@ -44,7 +49,12 @@
     }
   });
 
-  setupSimilarElement.classList.remove('hidden');
+  formElement.addEventListener('submit', function (evt) {
+    window.backend.save(new FormData(formElement), function () {
+      closePopup();
+    }, window.wizards.dataErrorHandler);
+    evt.preventDefault();
+  });
 
   window.setup = {
     setupElement: setupElement,
