@@ -3,7 +3,6 @@
 (function () {
   var setupElement = document.querySelector('.setup');
   var formElement = setupElement.querySelector('.setup-wizard-form');
-  var setupSimilarElement = document.querySelector('.setup-similar');
   var setupOpenElement = document.querySelector('.setup-open');
   var setupOpenIconElement = setupOpenElement.querySelector('.setup-open-icon');
   var setupCloseElement = setupElement.querySelector('.setup-close');
@@ -11,14 +10,12 @@
 
   var openPopup = function () {
     setupElement.classList.remove('hidden');
-    setupSimilarElement.classList.remove('hidden');
     window.wizards.renderWizardsData();
     document.addEventListener('keydown', popupEscPressHandler);
   };
 
   var closePopup = function () {
     setupElement.classList.add('hidden');
-    setupSimilarElement.classList.add('hidden');
     window.wizards.clearWizardsData();
     document.removeEventListener('keydown', popupEscPressHandler);
   };
